@@ -1,7 +1,7 @@
 /**Default Axios Request */
 import axios from "axios";
 import { ErrorToast, ExceptionHandling } from "../utils/ToastPromiseHandling";
-import { logOut } from "../utils/BaseUtils";
+import { TokenCheck } from "../utils/TokenCheck";
 export const AxiosRequest = async (
   url,
   method,
@@ -27,21 +27,21 @@ export const AxiosRequest = async (
       params: params,
     });
     if (callback) {
-      callback(toast_id, response.data);
+      callback(response.data, toast_id);
     }
     return response;
   } catch (error) {
     console.error(error);
     if (error.status && error.response.status === 401) {
-      logOut();
+      TokenCheck();
     } else if (error.status && error.response.status === 400) {
-      ExceptionHandling(toast_id, error);
+      ExceptionHandling(error, toast_id);
     } else if (error.status && error.response.status === 404) {
-      ExceptionHandling(toast_id, error);
+      ExceptionHandling(error, toast_id);
     } else if (error.status && error.response.status === 403) {
-      ExceptionHandling(toast_id, error);
+      ExceptionHandling(error, toast_id);
     } else {
-      ErrorToast(toast_id, error.message);
+      ErrorToast(error.message, toast_id);
     }
   }
 };

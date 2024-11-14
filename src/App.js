@@ -25,7 +25,12 @@ function App() {
         <UserProvider>
           <BrowserRouter>
             <NavBar />
-            <ToastContainer draggablePercent={60} draggable stacked />
+            <ToastContainer
+              draggablePercent={60}
+              draggable
+              stacked
+              className="z-[999]"
+            />
             <Routes>
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/login" element={<LoginPage />} />

@@ -5,54 +5,61 @@ import { useContext } from "react";
 import { useEffect, useState } from "react";
 function UpdateProfile({ user }) {
   /**Update Profile Modal  */
-  const [counter, setCounter] = useState(60);
+  const [counter, setCounter] = useState(30);
+  const [otpBlock, setOtpBlock] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     let timerId;
+    if (submitted) {
+      setCounter(30);
+      timerId = setInterval(() => {
+        setCounter((prevCounter) => {
+          if (prevCounter <= 1) {
+            clearInterval(timerId);
+            setSubmitted(false);
+            setOtpBlock(false);
+            return 30;
+          } else {
+            return prevCounter - 1;
+          }
+        });
+      }, 1000);
+    }
 
-    document.addEventListener("click", (event) => {
-      if (event.target.id === "generate_otp") {
-        event.preventDefault();
-        event.stopPropagation();
-        event.target.disabled = true;
-
-        setCounter(60);
-        timerId = setInterval(() => {
-          setCounter((prevCounter) => {
-            if (prevCounter <= 1) {
-              clearInterval(timerId);
-              event.target.disabled = false;
-              return 60;
-            } else {
-              return prevCounter - 1;
-            }
-          });
-        }, 1000);
-      }
-    });
-
-    // Clean up the timer when the component unmounts
+    // Clean up the timer when the component unmounts or submitted is false
     return () => clearInterval(timerId);
-  }, []);
-  const { updateUserProfile, updateUserEmail, verifyUserEmail, generateOtp } =
-    useContext(UserContext);
+  }, [submitted]);
+
+  const {
+    updateUserProfileHandle,
+    updateUserEmailHandle,
+    emailVerificationHandle,
+    emailVerificationOtpHandle,
+  } = useContext(UserContext);
   const handleSubmit = (event) => {
     event.preventDefault();
-    updateUserProfile(new FormData(event.target));
+    updateUserProfileHandle(new FormData(event.target));
   };
   const handleEmailSubmit = (event) => {
     event.preventDefault();
-    updateUserEmail(new FormData(event.target));
+    updateUserEmailHandle(new FormData(event.target));
   };
   const handleVerifyEmailSubmit = (event) => {
     event.preventDefault();
-    verifyUserEmail(new FormData(event.target));
+    emailVerificationHandle(new FormData(event.target));
+  };
+  const handleVerificationOtpSubmit = (event) => {
+    event.preventDefault();
+    emailVerificationOtpHandle();
+    setOtpBlock(true);
+    setSubmitted(true);
   };
 
   return (
     <>
       <dialog id="update_profile" className="modal">
-        <div className="modal-box" style={{ scrollbarWidth: "none" }}>
+        <div className="modal-box max-w-5xl" style={{ scrollbarWidth: "none" }}>
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute scale-95 transition-all hover:scale-100 hover:rotate-90 right-2 top-2">
               ✕
@@ -65,47 +72,103 @@ function UpdateProfile({ user }) {
               role="form"
               className="w-full mt-5 sm:mt-8"
             >
-              <div className="mx-auto w-full sm:max-w-md md:max-w-lg flex flex-col gap-5">
-                <input
-                  type="text"
-                  placeholder="Enter Your First Name"
-                  name="first_name"
-                  defaultValue={user.first_name}
-                  className="input input-bordered input-primary w-full"
-                />
-                <input
-                  type="text"
-                  placeholder="Enter Your Last Name"
-                  name="last_name"
-                  defaultValue={user.last_name}
-                  className="input input-bordered input-primary w-full"
-                />
-                <input
-                  type="text"
-                  placeholder="Enter Your Username"
-                  name="username"
-                  defaultValue={user.username}
-                  className="input input-bordered input-primary w-full"
-                />
-                <input
-                  type="number"
-                  placeholder="Enter Your Age"
-                  name="age"
-                  min={18}
-                  max={100}
-                  defaultValue={user.age}
-                  className="input input-bordered input-primary w-full"
-                />
-                <textarea
-                  className="textarea textarea-primary"
-                  placeholder="Enter Address"
-                  name="address"
-                  id="address"
-                  defaultValue={user.address}
-                  rows={4}
-                >
-                  {user.address}
-                </textarea>
+              <div className="mx-auto w-full flex flex-col gap-5">
+                {/* First Name */}
+                <label class="form-control w-full">
+                  <div class="label">
+                    <span class="label-text">First Name</span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Enter Your First Name"
+                    name="first_name"
+                    defaultValue={user.first_name}
+                    className="input input-bordered input-primary w-full"
+                  />
+                </label>
+                {/* Last Name */}
+                <label class="form-control w-full">
+                  <div class="label">
+                    <span class="label-text">Last Name</span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Enter Your Last Name"
+                    name="last_name"
+                    defaultValue={user.last_name}
+                    className="input input-bordered input-primary w-full"
+                  />
+                </label>
+                {/* Username */}
+                <label class="form-control w-full">
+                  <div class="label">
+                    <span class="label-text">User Name</span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Enter Your Username"
+                    name="username"
+                    defaultValue={user.username}
+                    className="input input-bordered input-primary w-full"
+                  />
+                </label>
+                {/* Age */}
+                <label class="form-control w-full">
+                  <div class="label">
+                    <span class="label-text">Age</span>
+                  </div>
+                  <input
+                    type="number"
+                    placeholder="Enter Your Age"
+                    name="age"
+                    min={18}
+                    max={100}
+                    defaultValue={user.age}
+                    className="input input-bordered input-primary w-full"
+                  />
+                </label>
+                {/* Gender */}
+                <label class="form-control w-full">
+                  <div class="label">
+                    <span class="label-text">Gender</span>
+                  </div>
+                  <select
+                    className="select select-bordered select-primary w-full"
+                    name="gender"
+                    defaultValue={user.gender}
+                  >
+                    <option value={"male"}>Male</option>
+                    <option value={"female"}>Female</option>
+                  </select>
+                </label>
+                {/* Phone Number */}
+                <label class="form-control w-full">
+                  <div class="label">
+                    <span class="label-text">Phone Number</span>
+                  </div>
+                  <input
+                    type="tel"
+                    placeholder="Enter Your Phone"
+                    name="phone"
+                    pattern="^\d{10}$"
+                    defaultValue={user.phone}
+                    className="input input-bordered input-primary w-full"
+                  />
+                </label>
+                {/*Address */}
+                <label class="form-control w-full">
+                  <div class="label">
+                    <span class="label-text">Phone Number</span>
+                  </div>
+                  <textarea
+                    className="textarea textarea-primary"
+                    placeholder="Enter Address"
+                    name="address"
+                    id="address"
+                    defaultValue={user.address}
+                    rows={4}
+                  ></textarea>
+                </label>
                 <div className="flex flex-col md:flex-row gap-2 md:gap-4 justify-center items-center">
                   <a
                     role="button"
@@ -200,10 +263,11 @@ function UpdateProfile({ user }) {
                 </span>
                 <div className="flex flex-col md:flex-row gap-2 md:gap-4 justify-end items-center">
                   <button
-                    onClick={generateOtp}
+                    onClick={handleVerificationOtpSubmit}
                     role="button"
                     className="btn btn-primary btn-block max-w-[200px]"
                     id="generate_otp"
+                    disabled={otpBlock}
                   >
                     Generate OTP
                   </button>

@@ -4,9 +4,11 @@ import { UserContext } from "../../contexts/Contexts";
 import updatePasswordGif from "../../static/img/password_change.webp";
 
 function ChangePassword() {
-  const { togglePasswordView, togglePassword } = useContext(UserContext);
+  const { togglePasswordView, togglePassword, updatePasswordHandle } =
+    useContext(UserContext);
   const handleSubmit = (event) => {
     event.preventDefault();
+    updatePasswordHandle(new FormData(event.target));
   };
   return (
     <>

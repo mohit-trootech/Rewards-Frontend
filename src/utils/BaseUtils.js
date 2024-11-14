@@ -18,7 +18,7 @@ export const logOut = () => {
   /**User Logout */
   RemoveLocalstorage("access");
   RemoveLocalstorage("refresh");
-  window.location.href = "/";
+  window.location.href = "/login";
 };
 
 /**Get User's Bearer Token */

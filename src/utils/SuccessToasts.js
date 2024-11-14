@@ -1,36 +1,44 @@
 /**React Toastify Success Toast */
 import { SuccessToast } from "./ToastPromiseHandling";
 import { SaveUpdateLocalstorage } from "../utils/BaseUtils";
-export const UpdatePasswordSuccess = (id, message) => {
-  SuccessToast(id, message.message);
+export const UpdatePasswordSuccess = (message, id) => {
+  SuccessToast(message.message, id);
 };
-export const userRegister = (id, response, successUrl) => {
-  SuccessToast(id, response.message, successUrl);
+export const userRegister = (response, id) => {
+  SuccessToast(response.message, id);
 };
-export const userLogin = (id, response, successUrl) => {
+export const userLogin = (response, id) => {
   SaveUpdateLocalstorage("access", response.access);
   SaveUpdateLocalstorage("refresh", response.refresh);
-  SuccessToast(id, response.message, successUrl);
+  SuccessToast(response.message, id);
 };
-
-export const userLogout = (id, response, successUrl) => {
-  SuccessToast(id, response.message, successUrl);
+export const changePassword = (response, id) => {
+  SuccessToast(response.message, id);
 };
-export const FetchUserProfile = (id, response, successUrl) => {
-  SuccessToast(id, response.message, successUrl);
+export const generateOtp = (response, id) => {
+  SuccessToast(response.message, id);
 };
-export const UpdateUserEmail = (id, response, successUrl) => {
-  SuccessToast(id, response.message, successUrl);
+export const userLogout = (response, id) => {
+  SuccessToast(response.message, id);
 };
-export const VerifyEmail = (id, response, successUrl) => {
-  SuccessToast(id, response.message, successUrl);
+export const FetchUserProfile = (response, id) => {
+  SuccessToast(response.message, id);
 };
-export const OtpGenerated = (id, response, successUrl) => {
-  SuccessToast(id, response.message, successUrl);
+export const updateProfile = (response, id) => {
+  SuccessToast("User Profile Updated Successfully", id);
 };
-export const forgotPasswordOtpSentSuccess = (id, response, successUrl) => {
-  SuccessToast(id, response.message, successUrl);
+export const updateEmail = (response, id) => {
+  SuccessToast("User Email Updated Successfully", id);
 };
-export const forgotPasswordOtpValidateSuccess = (id, response, successUrl) => {
-  SuccessToast(id, response.message, successUrl);
+export const VerifyEmail = (response, id) => {
+  SuccessToast(response.message, id);
+};
+export const OtpGenerated = (response, id) => {
+  SuccessToast(response.message, id);
+};
+export const forgotPasswordOtpSentSuccess = (response, id) => {
+  SuccessToast(response.message, id);
+};
+export const forgotPasswordOtpValidateSuccess = (response, id) => {
+  SuccessToast(response.message, id);
 };

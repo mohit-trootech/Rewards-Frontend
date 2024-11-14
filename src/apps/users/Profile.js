@@ -1,112 +1,160 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/alt-text */
 /**Profile Page*/
-import React, { useContext, useEffect } from "react";
-import { BsMailbox, BsMapFill, BsPerson } from "react-icons/bs";
-import { MdVerified } from "react-icons/md";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../contexts/Contexts";
+import { BsMapFill } from "react-icons/bs";
 import UpdateProfile from "./UpdateProfile";
 import profile from "../../static/img/profile.jpg";
-
+import ContentUnavailable from "../../components/ContentUnavailable";
+import { FiUsers } from "react-icons/fi";
+import { FaUserCircle, FaCheck } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
 function Profile() {
-  const user = null
+  /**Profile Page */
+  const { user, fetchUserHandle } = useContext(UserContext);
+  useEffect(() => {
+    fetchUserHandle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  console.log(user);
   return (
     <>
-      <div className="hero py-9 bg-base-200 min-h-screen">
-        <div className="max-w-4xl flex items-center flex-wrap mx-auto my-32 lg:my-0">
-          <div
-            id="profile"
-            className="w-full lg:w-3/5 rounded-lg lg:rounded-lg shadow-2xl border bg-base-100  mx-6 lg:mx-0"
-          >
-            <div className="p-4 md:p-12 text-center lg:text-left">
-              <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold pt-8 lg:pt-0 capitalize">
-                  {user.first_name
-                    ? user.first_name + " " + user.last_name
-                    : user.username}
-                </h1>
+      {user ? (
+        <div>
+          <div className="hero lg:min-h-screen bg-base-200 lg:py-9 h-auto">
+            <div className="flex items-center max-w-4xl flex-wrap mx-auto my-10 lg:my-0">
+              <div
+                id="profile"
+                className="w-full lg:w-3/5 rounded-lg lg:rounded-lg shadow-2xl border bg-base-100  mx-6 lg:mx-0"
+              >
+                <div className="p-4 md:p-12 text-center lg:text-left">
+                  <div className="card card-side bg-base-200 shadow-xl">
+                    <div className="card-body">
+                      <p class="mt-4 flex flex-col gap-5 items-center justify-center lg:justify-start md:items-start">
+                        <p className="card-title capitalize text-center">
+                          {user.first_name
+                            ? user.first_name + " " + user.last_name
+                            : user.username}
+                        </p>
+                        <p className="flex items-center justify-start">
+                          <span className="h-4 fill-current text-green-700 pr-4">
+                            <BsMapFill />
+                          </span>
+                          {user.address || (
+                            <span className="text-warning">Update Address</span>
+                          )}
+                        </p>
+                      </p>
+                      {/* User Information */}
+                      <ul className="menu bg-base-300 rounded-box">
+                        <li>
+                          <span>
+                            <FaUserCircle />
+                            Age:
+                            <span className="badge badge-sm badge-info">
+                              {(user.age && user.age + " Years Old") || "?"}
+                            </span>
+                          </span>
+                        </li>
+                        <li>
+                          <span>
+                            <FiUsers />
+                            Gender
+                            <span className="badge badge-sm badge-info capitalize">
+                              {user.gender || "?"}
+                            </span>
+                          </span>
+                        </li>
+                        <li>
+                          <a>
+                            Verified
+                            <span className="badge badge-xs badge-info">
+                              {user.is_verified ? (
+                                <FaCheck className="h-4 w-4" />
+                              ) : (
+                                <FaXmark className="h-4 w-4" />
+                              )}
+                            </span>
+                          </a>
+                        </li>
+                      </ul>
+                      {/* User Joining Information */}
+                      <div className="pt-5 flex md:flex-row flex-col gap-4 justify-center items-center">
+                        <button className="btn btn-sm bg-base-300">
+                          Date Joined
+                          <div className="badge badge-sm badge-secondary">
+                            {new Date(user.date_joined).toString().slice(4, 15)}
+                          </div>
+                        </button>
+                        <button className="btn btn-sm bg-base-300">
+                          Last Login
+                          <div className="badge badge-sm badge-secondary">
+                            {new Date(user.last_login).toString().slice(4, 15)}
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
 
-                {(user.is_verified && (
-                  <div className="badge badge-primary badge-lg rounded-full">
-                    <MdVerified />
+                  {/* User Wallet Information */}
+                  <div className="stats my-9 w-full bg-primary text-primary-content">
+                    <div className="stat">
+                      <div className="stat-title text-gray-900">
+                        Wallet balance
+                      </div>
+                      <div className="stat-value">$ {user.wallet.balance}</div>
+                      <div className="stat-actions">
+                        <button className="btn btn-sm btn-success">
+                          Add funds
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                )) ||
-                  null}
-              </div>
-              <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
-              <p className="pt-4 flex items-center justify-center lg:justify-start items-center">
-                <span className="h-4 fill-current text-green-700 pr-4">
-                  <BsMailbox />
-                </span>
-                {user.email}
-              </p>
-              <p className="pt-2 lg:text-sm flex items-center justify-center lg:justify-start items-center">
-                <span className="h-4 fill-current text-green-700 pr-4">
-                  <BsMapFill />
-                </span>
-                {user.address || (
-                  <span className="text-warning">Update Address</span>
-                )}
-              </p>
-              <p className="pt-2 lg:text-sm flex items-center justify-center lg:justify-start items-center">
-                <span className="h-4 fill-current text-green-700 pr-4">
-                  <BsPerson />
-                </span>
-                {user.age || <span className="text-warning">Update Age</span>}
-              </p>
-              <div className="pt-5 flex md:flex-row sm:flex-col gap-5 justify-center items-center">
-                <button className="btn btn-sm">
-                  Date Joined
-                  <div className="badge badge-secondary">
-                    {new Date(user.date_joined).toString().slice(4, 15)}
+
+                  <div className="flex flex-col md:flex-row gap-5 justify-center items-center">
+                    <button
+                      className="btn-primary btn"
+                      onClick={() =>
+                        document.getElementById("update_profile").showModal()
+                      }
+                    >
+                      Update Profile
+                    </button>
+                    <button
+                      className="btn-secondary btn"
+                      onClick={() =>
+                        document.getElementById("update_email").showModal()
+                      }
+                    >
+                      Update Email Address
+                    </button>
+                    <button
+                      className="btn-warning btn"
+                      onClick={() =>
+                        document.getElementById("verify_email").showModal()
+                      }
+                    >
+                      Verify Email
+                    </button>
                   </div>
-                </button>
-                <button className="btn btn-sm">
-                  Last Login
-                  <div className="badge badge-secondary">
-                    {new Date(user.last_login).toString().slice(4, 15)}
-                  </div>
-                </button>
+                </div>
               </div>
 
-              <div className="pt-12 pb-8 flex sm:flex-col md:flex-row gap-5 justify-center items-center">
-                <button
-                  className="btn-primary btn"
-                  onClick={() =>
-                    document.getElementById("update_profile").showModal()
-                  }
-                >
-                  Update Profile
-                </button>
-                <button
-                  className="btn-secondary btn"
-                  onClick={() =>
-                    document.getElementById("update_email").showModal()
-                  }
-                >
-                  Update Email Address
-                </button>
-                <button
-                  className="btn-warning btn"
-                  onClick={() =>
-                    document.getElementById("verify_email").showModal()
-                  }
-                >
-                  Verify Email
-                </button>
+              <div className="w-full lg:w-2/5">
+                <img
+                  src={profile}
+                  alt="profile"
+                  className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
+                />
               </div>
             </div>
           </div>
-
-          <div className="w-full lg:w-2/5">
-            <img
-              src={profile}
-              alt="profile"
-              className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
-            />
-          </div>
+          <UpdateProfile user={user} />
         </div>
-      </div>
-      <UpdateProfile user={user} />
+      ) : (
+        <ContentUnavailable content="Profile" />
+      )}
     </>
   );
 }
