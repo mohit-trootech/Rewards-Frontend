@@ -254,11 +254,11 @@ function UpdateProfile({ user }) {
                   className="input input-bordered input-primary w-full"
                 />
                 <span className="text-sm countdown">
-                  Resend OTP After,{" "}
+                  Resend OTP After,
                   <span
                     className="px-2 text-primary font-bold"
                     style={{ "--value": counter }}
-                  ></span>{" "}
+                  ></span>
                   Seconds
                 </span>
                 <div className="flex flex-col md:flex-row gap-2 md:gap-4 justify-end items-center">

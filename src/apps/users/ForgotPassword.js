@@ -1,14 +1,44 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../contexts/Contexts";
 import updatePasswordGif from "../../static/img/password_change.webp";
 
 function ForgotPassword() {
   /**Forgot Password Steps */
-  const [counter, setCounter] = useState(60);
-  let forgot = null;
-  const { otpBlock, generateOtp } = useContext(UserContext);
+  const [counter, setCounter] = useState(30);
+  const [otpBlock, setOtpBlock] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    let timerId;
+    if (submitted) {
+      setCounter(30);
+      timerId = setInterval(() => {
+        setCounter((prevCounter) => {
+          if (prevCounter <= 1) {
+            clearInterval(timerId);
+            setSubmitted(false);
+            setOtpBlock(false);
+            return 30;
+          } else {
+            return prevCounter - 1;
+          }
+        });
+      }, 1000);
+    }
+
+    // Clean up the timer when the component unmounts or submitted is false
+    return () => clearInterval(timerId);
+  }, [submitted]);
+  const { resetPasswordHandle, resetPasswordDoneHandle } =
+    useContext(UserContext);
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (otpBlock) {
+      resetPasswordDoneHandle(new FormData(event.target));
+    } else {
+      resetPasswordHandle(new FormData(event.target));
+      setOtpBlock(true);
+    }
   };
 
   return (
@@ -62,19 +92,23 @@ function ForgotPassword() {
                       <span
                         className="px-2 text-primary font-bold"
                         style={{ "--value": counter }}
-                      ></span>{" "}
+                      ></span>
                       Seconds
                     </span>
                   </>
                 )}
-                <button type="submit" className="btn btn-primary btn-block">
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-block"
+                  disabled={submitted}
+                >
                   {otpBlock ? "Reset Password" : "Generate OTP"}
                 </button>
               </div>
             </form>
           </div>
           <div className="sm:w-[60%] lg:w-[50%] bg-cover bg-center items-center justify-center hidden md:flex ">
-            <img src={forgot} alt="login" className="h-[500px]" />
+            <img src={updatePasswordGif} alt="login" className="h-[500px]" />
           </div>
         </div>
       </div>

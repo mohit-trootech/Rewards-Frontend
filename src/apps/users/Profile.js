@@ -17,7 +17,7 @@ function Profile() {
     fetchUserHandle();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(user);
+  // console.log(user);
   return (
     <>
       {user ? (

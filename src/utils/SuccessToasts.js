@@ -36,7 +36,7 @@ export const VerifyEmail = (response, id) => {
 export const OtpGenerated = (response, id) => {
   SuccessToast(response.message, id);
 };
-export const forgotPasswordOtpSentSuccess = (response, id) => {
+export const resetPassword = (response, id) => {
   SuccessToast(response.message, id);
 };
 export const forgotPasswordOtpValidateSuccess = (response, id) => {

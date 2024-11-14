@@ -3,7 +3,6 @@ import { loadLocalstorage, logOut, SaveUpdateLocalstorage } from "./BaseUtils";
 import { rewardsApiDefaultAccountsUrl } from "./Constants";
 import axios from "axios";
 export const TokenCheck = () => {
-  console.log(localStorage.getItem("access"));
   const refreshToken = loadLocalstorage("refresh");
   try {
     refreshToken

@@ -11,6 +11,8 @@ import {
   userRegister,
   changePassword,
   generateOtp,
+  VerifyEmail,
+  resetPassword,
 } from "../utils/SuccessToasts";
 import { getBearerToken } from "../utils/BaseUtils";
 const UserProvider = ({ children }) => {
@@ -85,6 +87,34 @@ const UserProvider = ({ children }) => {
       id
     );
   };
+  /**User Password Reset Context */
+  const resetPasswordHandle = async (data) => {
+    /**Axios Request to Update User Password */
+    id = LoadingToast("Resetting Password...");
+    await AxiosRequest(
+      rewardsApiDefaultAccountsUrl + "reset-password/",
+      "POST",
+      data,
+      null,
+      null,
+      resetPassword,
+      id
+    );
+  };
+  /**User Password Reset Context */
+  const resetPasswordDoneHandle = async (data) => {
+    /**Axios Request to Update User Password */
+    id = LoadingToast("Resetting Password...");
+    await AxiosRequest(
+      rewardsApiDefaultAccountsUrl + "reset-password/",
+      "PATCH",
+      data,
+      null,
+      null,
+      resetPassword,
+      id
+    );
+  };
   /**Update User Profile Context */
   const updateUserProfileHandle = async (data) => {
     /**Axios Request to Update User Password */
@@ -133,14 +163,14 @@ const UserProvider = ({ children }) => {
   /**User Email Verification */
   const emailVerificationHandle = async (data) => {
     /**Axios Request to Update User Password */
-    id = LoadingToast("Updating Password...");
+    id = LoadingToast("Verifying Email...");
     await AxiosRequest(
-      rewardsApiDefaultAccountsUrl + "change-email/",
+      rewardsApiDefaultAccountsUrl + "verify-email/",
       "PATCH",
       data,
       getBearerToken(),
       null,
-      updateEmail,
+      VerifyEmail,
       id
     );
   };
@@ -159,6 +189,8 @@ const UserProvider = ({ children }) => {
     updateUserEmailHandle,
     emailVerificationOtpHandle,
     emailVerificationHandle,
+    resetPasswordHandle,
+    resetPasswordDoneHandle,
   };
 
   return <UserContext.Provider value={data}>{children}</UserContext.Provider>;
