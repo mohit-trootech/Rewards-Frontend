@@ -8,8 +8,10 @@ import UpdateProfile from "./UpdateProfile";
 import profile from "../../static/img/profile.jpg";
 import ContentUnavailable from "../../components/ContentUnavailable";
 import { FiUsers } from "react-icons/fi";
-import { FaUserCircle, FaCheck } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
+import { FaUserCircle } from "react-icons/fa";
+import verificationBadge from "../../static/img/verified-badge.webp";
+import PaypalPayment from "./PaypalPayment";
+import { getFormattedDate } from "../../utils/BaseUtils";
 function Profile() {
   /**Profile Page */
   const { user, fetchUserHandle } = useContext(UserContext);
@@ -31,12 +33,21 @@ function Profile() {
                 <div className="p-4 md:p-12 text-center lg:text-left">
                   <div className="card card-side bg-base-200 shadow-xl">
                     <div className="card-body">
-                      <p class="mt-4 flex flex-col gap-5 items-center justify-center lg:justify-start md:items-start">
-                        <p className="card-title capitalize text-center">
-                          {user.first_name
-                            ? user.first_name + " " + user.last_name
-                            : user.username}
-                        </p>
+                      <div className="mt-4 flex flex-col gap-5 items-center justify-center lg:justify-start md:items-start">
+                        <div className="flex items-center justify-between">
+                          <p className="card-title capitalize text-center mr-2">
+                            {user.first_name
+                              ? user.first_name + " " + user.last_name
+                              : user.username}
+                          </p>
+                          {user.is_verified && (
+                            <img
+                              className="h-4 w-4"
+                              src={verificationBadge}
+                              alt="verification"
+                            />
+                          )}
+                        </div>
                         <p className="flex items-center justify-start">
                           <span className="h-4 fill-current text-green-700 pr-4">
                             <BsMapFill />
@@ -45,7 +56,7 @@ function Profile() {
                             <span className="text-warning">Update Address</span>
                           )}
                         </p>
-                      </p>
+                      </div>
                       {/* User Information */}
                       <ul className="menu bg-base-300 rounded-box">
                         <li>
@@ -66,31 +77,19 @@ function Profile() {
                             </span>
                           </span>
                         </li>
-                        <li>
-                          <a>
-                            Verified
-                            <span className="badge badge-xs badge-info">
-                              {user.is_verified ? (
-                                <FaCheck className="h-4 w-4" />
-                              ) : (
-                                <FaXmark className="h-4 w-4" />
-                              )}
-                            </span>
-                          </a>
-                        </li>
                       </ul>
                       {/* User Joining Information */}
                       <div className="pt-5 flex md:flex-row flex-col gap-4 justify-center items-center">
                         <button className="btn btn-sm bg-base-300">
                           Date Joined
                           <div className="badge badge-sm badge-secondary">
-                            {new Date(user.date_joined).toString().slice(4, 15)}
+                            {getFormattedDate(user.date_joined)}
                           </div>
                         </button>
                         <button className="btn btn-sm bg-base-300">
                           Last Login
                           <div className="badge badge-sm badge-secondary">
-                            {new Date(user.last_login).toString().slice(4, 15)}
+                            {getFormattedDate(user.last_login)}
                           </div>
                         </button>
                       </div>
@@ -105,9 +104,15 @@ function Profile() {
                       </div>
                       <div className="stat-value">$ {user.wallet.balance}</div>
                       <div className="stat-actions">
-                        <button className="btn btn-sm btn-success">
+                        <button
+                          className="btn btn-sm btn-success"
+                          onClick={() =>
+                            document.getElementById("wallet_topup").showModal()
+                          }
+                        >
                           Add funds
                         </button>
+                        <PaypalPayment />
                       </div>
                     </div>
                   </div>

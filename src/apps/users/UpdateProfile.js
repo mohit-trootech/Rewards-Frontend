@@ -2,13 +2,18 @@
 /**Update Profile Modal */
 import { UserContext } from "../../contexts/Contexts";
 import { useContext } from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 function UpdateProfile({ user }) {
   /**Update Profile Modal  */
-  const [counter, setCounter] = useState(30);
-  const [otpBlock, setOtpBlock] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
+  const {
+    counter,
+    setCounter,
+    submitted,
+    setSubmitted,
+    otpBlock,
+    setOtpBlock,
+  } = useContext(UserContext);
   useEffect(() => {
     let timerId;
     if (submitted) {
@@ -29,6 +34,7 @@ function UpdateProfile({ user }) {
 
     // Clean up the timer when the component unmounts or submitted is false
     return () => clearInterval(timerId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitted]);
 
   const {
@@ -74,9 +80,9 @@ function UpdateProfile({ user }) {
             >
               <div className="mx-auto w-full flex flex-col gap-5">
                 {/* First Name */}
-                <label class="form-control w-full">
-                  <div class="label">
-                    <span class="label-text">First Name</span>
+                <label className="form-control w-full">
+                  <div className="label">
+                    <span className="label-text">First Name</span>
                   </div>
                   <input
                     type="text"
@@ -87,9 +93,9 @@ function UpdateProfile({ user }) {
                   />
                 </label>
                 {/* Last Name */}
-                <label class="form-control w-full">
-                  <div class="label">
-                    <span class="label-text">Last Name</span>
+                <label className="form-control w-full">
+                  <div className="label">
+                    <span className="label-text">Last Name</span>
                   </div>
                   <input
                     type="text"
@@ -100,9 +106,9 @@ function UpdateProfile({ user }) {
                   />
                 </label>
                 {/* Username */}
-                <label class="form-control w-full">
-                  <div class="label">
-                    <span class="label-text">User Name</span>
+                <label className="form-control w-full">
+                  <div className="label">
+                    <span className="label-text">User Name</span>
                   </div>
                   <input
                     type="text"
@@ -113,9 +119,9 @@ function UpdateProfile({ user }) {
                   />
                 </label>
                 {/* Age */}
-                <label class="form-control w-full">
-                  <div class="label">
-                    <span class="label-text">Age</span>
+                <label className="form-control w-full">
+                  <div className="label">
+                    <span className="label-text">Age</span>
                   </div>
                   <input
                     type="number"
@@ -128,9 +134,9 @@ function UpdateProfile({ user }) {
                   />
                 </label>
                 {/* Gender */}
-                <label class="form-control w-full">
-                  <div class="label">
-                    <span class="label-text">Gender</span>
+                <label className="form-control w-full">
+                  <div className="label">
+                    <span className="label-text">Gender</span>
                   </div>
                   <select
                     className="select select-bordered select-primary w-full"
@@ -142,9 +148,9 @@ function UpdateProfile({ user }) {
                   </select>
                 </label>
                 {/* Phone Number */}
-                <label class="form-control w-full">
-                  <div class="label">
-                    <span class="label-text">Phone Number</span>
+                <label className="form-control w-full">
+                  <div className="label">
+                    <span className="label-text">Phone Number</span>
                   </div>
                   <input
                     type="tel"
@@ -156,9 +162,9 @@ function UpdateProfile({ user }) {
                   />
                 </label>
                 {/*Address */}
-                <label class="form-control w-full">
-                  <div class="label">
-                    <span class="label-text">Phone Number</span>
+                <label className="form-control w-full">
+                  <div className="label">
+                    <span className="label-text">Phone Number</span>
                   </div>
                   <textarea
                     className="textarea textarea-primary"

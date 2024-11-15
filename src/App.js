@@ -18,33 +18,45 @@ import Profile from "./apps/users/Profile";
 /**Providers */
 import ThemeProvider from "./Providers/ThemeProvider";
 import UserProvider from "./Providers/UserProvider";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import PaymentProvider from "./Providers/PaymentProvider";
 function App() {
+  const initialOptions = {
+    "client-id":
+      "Ad-FteXT0_V-dUi3hzwkkW37SLwsQaJfNiScNwLS2NFpmX49QZWxt8BHl-7KnX0rCCwDVB7tYlb7ZRF4",
+    currency: "USD",
+    intent: "capture",
+  };
   return (
     <>
-      <ThemeProvider>
-        <UserProvider>
-          <BrowserRouter>
-            <NavBar />
-            <ToastContainer
-              draggablePercent={60}
-              draggable
-              stacked
-              className="z-[999]"
-            />
-            <Routes>
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/change-password" element={<ChangePassword />} />
-              <Route path="/reset-password" element={<ForgotPassword />} />
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="*" element={<NoPage />} />
-            </Routes>
-            <Footer />
-          </BrowserRouter>
-        </UserProvider>
-      </ThemeProvider>
+      <UserProvider>
+        <ThemeProvider>
+          <PayPalScriptProvider options={initialOptions}>
+            <PaymentProvider>
+              <BrowserRouter>
+                <NavBar />
+                <ToastContainer
+                  draggablePercent={60}
+                  draggable
+                  stacked
+                  className="z-[999]"
+                />
+                <Routes>
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/change-password" element={<ChangePassword />} />
+                  <Route path="/reset-password" element={<ForgotPassword />} />
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="*" element={<NoPage />} />
+                </Routes>
+                <Footer />
+              </BrowserRouter>
+            </PaymentProvider>
+          </PayPalScriptProvider>
+        </ThemeProvider>
+      </UserProvider>
     </>
   );
 }

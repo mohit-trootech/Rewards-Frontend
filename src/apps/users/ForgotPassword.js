@@ -1,12 +1,17 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/Contexts";
 import updatePasswordGif from "../../static/img/password_change.webp";
 
 function ForgotPassword() {
   /**Forgot Password Steps */
-  const [counter, setCounter] = useState(30);
-  const [otpBlock, setOtpBlock] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const {
+    counter,
+    setCounter,
+    submitted,
+    setSubmitted,
+    otpBlock,
+    setOtpBlock,
+  } = useContext(UserContext);
 
   useEffect(() => {
     let timerId;
@@ -28,6 +33,7 @@ function ForgotPassword() {
 
     // Clean up the timer when the component unmounts or submitted is false
     return () => clearInterval(timerId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitted]);
   const { resetPasswordHandle, resetPasswordDoneHandle } =
     useContext(UserContext);
@@ -37,7 +43,6 @@ function ForgotPassword() {
       resetPasswordDoneHandle(new FormData(event.target));
     } else {
       resetPasswordHandle(new FormData(event.target));
-      setOtpBlock(true);
     }
   };
 

@@ -25,3 +25,8 @@ export const logOut = () => {
 export const getBearerToken = () => {
   return "Bearer " + loadLocalstorage("access");
 };
+
+/**Formatted Date time Object */
+export const getFormattedDate = (date) => {
+  return new Date(date).toString().slice(4, 15);
+};

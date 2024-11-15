@@ -19,6 +19,9 @@ const UserProvider = ({ children }) => {
   /**User Provider */
   let id = null;
   const [user, setUser] = useState(null);
+  const [counter, setCounter] = useState(30);
+  const [otpBlock, setOtpBlock] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   /**Toggle Password View State */
   const [togglePassword, setTogglePassword] = useState(false);
   const togglePasswordView = () => {
@@ -91,7 +94,7 @@ const UserProvider = ({ children }) => {
   const resetPasswordHandle = async (data) => {
     /**Axios Request to Update User Password */
     id = LoadingToast("Resetting Password...");
-    await AxiosRequest(
+    let response = await AxiosRequest(
       rewardsApiDefaultAccountsUrl + "reset-password/",
       "POST",
       data,
@@ -100,6 +103,7 @@ const UserProvider = ({ children }) => {
       resetPassword,
       id
     );
+    response && setOtpBlock(true);
   };
   /**User Password Reset Context */
   const resetPasswordDoneHandle = async (data) => {
@@ -128,9 +132,7 @@ const UserProvider = ({ children }) => {
       updateProfile,
       id
     );
-    if (response.status === 200) {
-      setUser(response.data);
-    }
+    response && setUser(response.data);
   };
   /**Update User Email Context */
   const updateUserEmailHandle = async (data) => {
@@ -191,6 +193,12 @@ const UserProvider = ({ children }) => {
     emailVerificationHandle,
     resetPasswordHandle,
     resetPasswordDoneHandle,
+    otpBlock,
+    setOtpBlock,
+    submitted,
+    setSubmitted,
+    counter,
+    setCounter,
   };
 
   return <UserContext.Provider value={data}>{children}</UserContext.Provider>;
